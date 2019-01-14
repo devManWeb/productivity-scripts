@@ -1,3 +1,9 @@
+'''
+This script creates a zip archive of the contents of a selected directory
+The name of the zip file is the combination of the current year, month and day
+the zip archive is then moved to the selected directory
+'''
+
 from datetime import date
 import shutil
 import os
