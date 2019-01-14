@@ -7,7 +7,7 @@ def variables():
 	today_date = str(date.today())
 	file_name = today_date.replace("-", "")
 
-	folder_name = "C:/Work"
+	folder_name = "C:/Work" #Edit this with the path of your folder
 
 	return file_name,folder_name
 
