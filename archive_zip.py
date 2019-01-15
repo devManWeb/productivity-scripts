@@ -8,27 +8,54 @@ from datetime import date
 import shutil
 import os
 
-'''Variables'''
-def variables():
-	today_date = str(date.today())
-	file_name = today_date.replace("-", "")
+class Zip_maker():
 
-	folder_name = "C:/Work" #Edit this with the path of your folder
+	def __init__(self, folder_name):
+		self.folder_name = folder_name
+		self.compression_ok = True	
+		self.today_date = str(date.today())
+		self.file_name = self.today_date.replace("-", "")
 
-	return file_name,folder_name
+	def compress(self):
+		print("Compressing " + self.file_name +".zip ...")
+		shutil.make_archive(self.file_name, 'zip', self.folder_name)
 
+	def get_compression_ok(self):
+		return self.compression_ok
+		
+	def set_compression_ok(value,bool):
+		self.compression_ok = bool
+
+	def compress_error(self):
+		print("Deleting " + self.file_name +".zip ...")
+		os.remove(self.file_name +".zip ...")
+		input("Press any key to exit...")
+
+	def move(self):
+		print("Moving " + self.file_name +".zip ...")
+		shutil.move(self.file_name + '.zip', self.folder_name)
+
+	def move_error(self):
+		input("Press any key to exit...")
+	
+
+data = Zip_maker("D:/Sviluppo") #Edit this with the path of your folder
 
 try:
-	'''Compressing'''
-	print("Compressing " + variables()[0] +".zip ...")
-	shutil.make_archive(variables()[0], 'zip', variables()[1])
+	data.compress()
+	
+except Exception as comp_error:
+        data.set_compression_ok(False)
+        print(comp_error)
+        data.compress_error()
 
-	'''Moving'''
-	print("Moving " + variables()[0] +".zip ...")
-	shutil.move(variables()[0] + '.zip', variables()[1])
+if data.get_compression_ok: 	
 
-except Exception as e:
-	'''Error managment from shutil operations'''
-	print(e)
-	input("Press any key to exit...")
+	try:
+		data.move()
+		
+	except Exception as mov_error:
+		print(mov_error)
+		data.move_error()
+
 
