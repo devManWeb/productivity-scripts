@@ -26,7 +26,7 @@ class Ticket_manager():
 	def read_ini_file(self):
 		config = configparser.ConfigParser()
 		config.sections()
-		config.read('config.ini')
+		config.read('config_file.ini')
 		number_of_tickets = config['DEFAULT']['last_ticket']
 		return number_of_tickets
 
@@ -34,7 +34,7 @@ class Ticket_manager():
 		config = configparser.ConfigParser()
 		config.sections()
 		config['DEFAULT']['last_ticket'] = index
-		with open('config.ini', 'w') as configfile:
+		with open('config_file.ini', 'w') as configfile:
 			config.write(configfile)
 
 	def new_ticket(self):
