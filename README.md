@@ -6,6 +6,6 @@ The code in this repo was written to automate stuff, for programming exercise or
 
 ## List of Scripts
 
-- [archive_zip](archive_zip.py): this script creates a zip archive of the contents of a selected directory
+- Archive_zip: this script creates a zip archive of the contents of a selected directory
 
-- [ticket_manager](ticket_manager/ticket_manager.py): This simple script manages tickets assistance files. 
+- Ticket_manager: this simple script manages tickets assistance files. 
