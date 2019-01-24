@@ -2,11 +2,13 @@
 This script creates a zip archive of the contents of a selected directory
 The file name of the zip is the union of the current year, month, day, hours and minutes
 the archive is then moved to the selected directory
+Important: this script was developed for Win only
 '''
 
 import shutil
 import os
 import time
+import glob
 
 class Zip_maker():
 
@@ -31,16 +33,35 @@ class Zip_maker():
 		os.remove(self.file_name +".zip ...")
 		input("Press any key to exit...")
 
+	def previous_backups(self):
+		list = glob.glob(self.destination +'/*-*.zip')
+		backup_list = [pathname.replace('\\', '/') for pathname in list] #Win path
+		if backup_list: #if the file list is not empty
+			print("Saved backups:\n")
+			for file in backup_list:
+				print(file)
+			def backups_remover():
+				user_choice = input("Remove previous backups in " + self.destination + "? (Y/N)\n")
+				if user_choice.upper() == "Y":
+					for file in backup_list:
+						os.remove(file)
+					print("Backups removed")
+				elif user_choice.upper() != "N":
+					print("Not valid choice!")
+					backups_remover()
+			backups_remover()
+
 	def move(self):
 		print("Moving " + self.file_name +".zip to " + self.destination + "...")
 		shutil.move(self.file_name + '.zip', self.destination)
+		input("Press any key to exit!")
 
 	def move_error(self):
 		input("Press any key to exit...")
 
 
 #Edit this with the path of your folder and with the destination folder
-data = Zip_maker("D:/Sviluppo", "D:/backups")
+data = Zip_maker("D:/Sviluppo", "T:/UFFICIO SOFTWARE/Leonardo/BACKUP SVILUPPO")
 
 try:
 	data.compress()
@@ -53,8 +74,9 @@ except Exception as comp_error:
 if data.get_compression_ok():
 
 	try:
+		data.previous_backups()
 		data.move()
 
-	except Exception as mov_error:
-		print(mov_error)
+	except Exception as del_mov_error:
+		print(del_mov_error)
 		data.move_error()
