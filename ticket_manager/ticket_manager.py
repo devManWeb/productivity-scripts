@@ -28,7 +28,7 @@ class Ticket_manager():
 	def read_ini_file(self):
 		config = configparser.ConfigParser()
 		config.sections()
-		config.read('config.ini')
+		config.read('config_file.ini')
 		number_of_tickets = config['DEFAULT']['last_ticket']
 		return number_of_tickets
 
@@ -61,9 +61,9 @@ class Ticket_manager():
 					else:
 						line_size = 0
 						if not re.match(is_broken_word, user_input[i]):
-							processed_text = processed_text + "-\n"
+							processed_text = processed_text + user_input[i] + "-\n"
 						else:
-							processed_text = processed_text + "\n"
+							processed_text = processed_text + user_input[i] + "\n"
 				return processed_text
 
 
