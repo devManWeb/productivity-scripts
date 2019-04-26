@@ -11,3 +11,5 @@ The code in this repo was written to automate stuff, for programming exercise or
 - Ticket_manager: this simple script manages tickets assistance files. 
 
 - Easy saver: A snippet that i use to autosave my work some programs.
+
+- Find device: Search for devices in the local network that have the same first three pairs of the MAC address, then open it on the browser.
