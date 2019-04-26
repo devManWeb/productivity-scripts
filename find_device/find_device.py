@@ -3,7 +3,7 @@ Search for devices in the local network that have the same first three pairs of 
 Then, if we find a corresponding device, we open it in the browser
 If we found more than one devices, we make a choice.
 The configuration parameters are loaded from the INI file
-This script is for WIN only
+Important: this script was developed for Win OS only
 '''
 import configparser
 import re
