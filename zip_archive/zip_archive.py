@@ -1,7 +1,8 @@
 '''
 This script creates a zip archive of the contents of a selected directory
 The file name of the zip is the union of the current year, month, day, hours and minutes
-the archive is then moved to the selected directory
+if, in the target directory, there are saved backups we are asked if we want to keep them
+the compressed archive is then moved to the selected directory
 Important: this script was developed for Win only
 '''
 
@@ -20,7 +21,7 @@ class Zip_maker():
 		self.file_name = time.strftime("%Y%m%d-%H%M")
 
 	def compress(self):
-		print("Compressing " + self.file_name +".zip ...")
+		print("Compressing " + self.file_name +".zip ...\n")
 		shutil.make_archive(self.file_name, 'zip', self.folder_name)
 
 	def get_compression_ok(self):
@@ -30,29 +31,27 @@ class Zip_maker():
 		self.compression_ok = bool
 
 	def compress_error(self):
-		print("Deleting " + self.file_name +".zip ...")
+		print("Deleting " + self.file_name +".zip ...\n")
 		os.remove(self.file_name +".zip ...")
 		input("Press any key to exit...")
 		
 	def previous_backups(self):
 		list = glob.glob(self.destination +'/*-*.zip')
-		backup_list = [pathname.replace('\\', '/') for pathname in list] #Windows path
+		backup_list = [pathname.replace('\\', '/') for pathname in list] #Windows path - list
 		if backup_list: #if not empty
 			print("Saved backups:\n")
-			for file in backup_list:
-				print(file)
+			for file in range(0,len(backup_list)):
+				print(str(file) + " - " + backup_list[file])
 			def backups_remover():
-				user_choice = input("Remove previous backups in " + self.destination + "? (Y/N)\n")
+				user_choice = input("Do you want to delete backups in " + self.destination + "? (Y/N)\n")
 				if user_choice.upper() == "Y":
 					for file in backup_list:
 						os.remove(file) 
-					print("Backups removed")
+					print("Backups removed\n")					
 				elif user_choice.upper() == "N":
-					print(self.file_name + " is not moved")
-					input("Press any key to exit...")
-					sys.exit()
+					print("previous backups have not been removed!\n")				
 				else:
-					print("Not valid choice!")
+					print("Not valid choice!\n")
 					backups_remover()
 			backups_remover()
 				
@@ -62,11 +61,7 @@ class Zip_maker():
 		for i in range(10, 0, -1): #reverse loop to autoclosing
 			print('Closing in {} seconds...'.format(i), end='\r') #redraw line
 			time.sleep(1)
-		sys.exit()
-
-	def move_error(self):
-		input("Press any key to exit...")
-	
+		sys.exit()	
 
 #Edit this with the path of your folder and with the destination folder	
 data = Zip_maker("D:/Sviluppo", "T:/UFFICIO SOFTWARE/Leonardo/BACKUP SVILUPPO")
@@ -87,4 +82,6 @@ if data.get_compression_ok():
 		
 	except Exception as del_mov_error:
 		print(del_mov_error)
-		data.move_error()
+		data.compress_error() #we delete the zip in the script folder if we cannot move it
+		
+		
