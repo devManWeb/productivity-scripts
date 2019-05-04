@@ -2,7 +2,7 @@
 Search for devices in the local network that have the same first three pairs of the MAC address.
 Then, if we find one or more corresponding device, we show the IP
 The configuration parameters are loaded from the INI file
-Important: this script was developed for Win OS only
+Important: this script was developed for Windows only
 '''
 import configparser
 import re

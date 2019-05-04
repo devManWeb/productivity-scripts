@@ -3,7 +3,7 @@ This script creates a zip archive of a list of selected folders
 The zip name file is the union of the current year, month, day, hours and minutes
 If, in the target directory, there are saved backups we choose if keep them or not
 All configurations of this script are found on the INI file 
-Important: this script was developed for Win only
+Important: this script was developed only for Windows
 '''
 
 import shutil
