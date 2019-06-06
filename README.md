@@ -12,3 +12,5 @@ The code in this repo was written to automate stuff, for programming exercise or
 - Easy saver: A snippet that i use to autosave my work some programs.
 
 - Find device: Search for devices in the local network that have the same first three pairs of the MAC address, then open it on the browser.
+
+- Add date: this script adds the last modification date to all file or folder names in the current directory
