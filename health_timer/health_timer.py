@@ -72,12 +72,24 @@ class HealthTimer():
 			def compareTime(start,end):
 				#is the current time between start and end?
 				start = start.split(":")
-				actual = datetime.now().strftime('%H:%M')
+				actual = datetime.now().strftime('%H:%M').split(":")
 				end = end.split(":")
 				boolHour = int(start[0]) < int(actual[0]) < int(end[0])
 				boolMinute = int(start[1]) < int(actual[1]) < int(end[1])
-
 				return boolHour and boolMinute
+
+			def timeTo(secondValue):
+				#how much time is left (in seconds)?
+				actual = datetime.now().strftime('%H:%M').split(":")
+				secondValue = secondValue.split(":")
+				convertedHours = (int(actual[0]) - int(secondValue[0])) * 3600
+				convertedMinutes =(int(actual[1]) - int(secondValue[1])) * 60
+				result = convertedHours + convertedMinutes
+				if(result > 0):
+					return result
+				else:
+					#TODO:implement also for the evening
+					raise Exception("Negative interval!")
 
 			def isInPause():
 				#If we're working, is it time to take a break?
@@ -115,14 +127,17 @@ class HealthTimer():
 
 			else:
 				self.notification("Now it's not time to work!")
-				input("Press any key to exit...")
+				Timer(timeTo(workStart), timeChecker).start()
 
 		timeChecker() #first call to start the timer
 
-
+'''
 try:
 	app = HealthTimer()
 	app.clock()
 except Exception as gen_error:
 	print("Attention, " + str(gen_error))
 	input("Press any key to exit..")
+'''
+app = HealthTimer()
+app.clock()
