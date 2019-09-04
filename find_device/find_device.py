@@ -1,7 +1,12 @@
 '''
-Search for devices in the local network that have the same first three pairs of the MAC address.
-Then, if we find a corresponding device, we open it in the browser
-If we found more than one devices, we make a choice.
+Search for devices, in the local network, that have 
+the same first three pairs of one of the mac addresses
+provided for the chosen device.
+
+If we find a corresponding device, we open it in the browser
+with the protocol set in the configuration file.
+If we found more than one devices, we ask you to make a choice.
+
 The configuration parameters are loaded from the INI file
 Important: this script was developed for Win OS only
 '''
@@ -9,6 +14,7 @@ import configparser
 import re
 import nmap
 import webbrowser
+import os
 
 class Find_device():
 
@@ -108,10 +114,14 @@ class Find_device():
 
 app = Find_device()
 
-try:
-	app.user_menu()
-	app.scan_network()
-	app.choose_and_open()
-except Exception as gen_error:
-	print("Attention, " + str(gen_error))
+if os.name == "nt":
+	try:
+		app.user_menu()
+		app.scan_network()
+		app.choose_and_open()
+	except Exception as gen_error:
+		print("Attention, " + str(gen_error))
+		input("Press any key to exit..")
+else:
+	print("Unsupported operating system")
 	input("Press any key to exit..")
