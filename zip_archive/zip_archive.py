@@ -4,11 +4,13 @@ The zip name file is the union of the current year, month, day, hours and minute
 If, in the target directory, there are saved backups we choose if keep them or not
 All configurations of this script are found on the INI file 
 Important: this script was developed for Win only
+Plase note: if this script is closed before the end 
+the user has to manually remove the temporary folder"
 '''
 
 from shutil import copytree, make_archive, move, rmtree
 from configparser import ConfigParser
-from os import path, remove, name, walk
+from os import path, remove, name, walk, chdir, mkdir
 from time import strftime, sleep
 from glob import glob
 from tempfile import mkdtemp, gettempdir
@@ -16,6 +18,11 @@ from tempfile import mkdtemp, gettempdir
 class Zip_maker():
 
 	def __init__(self):
+
+		print("Plase note:")
+		print("If this script is closed before the end,")
+		print("the user has to manually remove the temporary folder")
+		
 		#reading of the configuration file
 		config = ConfigParser()
 		config.read('config_file.ini')
@@ -30,48 +37,44 @@ class Zip_maker():
 			
 		#Other variables used in this class
 		self.file_name = strftime("%Y%m%d-%H%M")
-		#temporary folder, deleted when we close this scipt
+		#temporary folder, deleted when we close this script
 		self.full_temp_path = mkdtemp(prefix="zip-archive-")
 
 	def __temp_cleanup(self):
 		#private method, removes the temporary folder
 		print("\nRemoving temporary files...")
+		#we exit from the temp folder to avoid an error
+		chdir('..')
 		rmtree(self.full_temp_path)
 
 	def __replace_slash(self,full_path):
 		#private method, replace / with \\
 		return full_path.replace('/', '\\')
 
-	'''	
-	TODO: implement a method to clean up past tmp folders
-	use previous_backups and make it a private method
-	
-	def __check_tmp_folders(self):
-		temp_dir = gettempdir()
-		for dirs in walk(temp_dir):
-		#if "zip-archive-" in temp_dir
-			print(dirs)
-	'''
-
 	def copy_compress(self):
 		#if not Win, we raise an error
 		if name != "nt":
 			raise Exception("OS not supported!")
 
-		#we copy all the content from the specified paths
+		'''
+		we copy all the content from the specified paths 
+		to to_backup in the temp folder
+		'''
 		partial = ""
 		for current_path in self.folder_name:
 			print("\nCopying " + current_path + "...")
 			partial = path.basename(current_path)
-			copytree(current_path,self.full_temp_path + '\\' + partial)
+			copytree(current_path,self.full_temp_path + '\\to_backup\\' + partial)
 
-		#making a zip archive	
+		#we change the current directory to the temp folder
+		chdir(self.full_temp_path)
+
+		#here we make a zip archive	
 		print("\nCompressing " + self.file_name +".zip ...")
 		make_archive(
-			base_dir= self.full_temp_path,
-			root_dir= self.full_temp_path,
+			base_name=self.file_name,
 			format='zip',
-			base_name= self.full_temp_path + "\\" + self.file_name 
+  			base_dir='to_backup'
 		)
 
 	def previous_backups(self):
