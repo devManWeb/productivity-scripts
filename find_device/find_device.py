@@ -89,7 +89,11 @@ class Find_device():
 		if not self.IP_found_arr:
 			#if there is no compatible device
 			print("No result!\n")
-			self.user_menu() #we call the method another time
+			#we call the whole procedure again
+			self.user_menu()
+			self.scan_network()
+			self.choose_and_open()
+			
 		elif len(self.IP_found_arr) == 1:
 			#if there is one compatible device
 			webbrowser.open(self.protocol + "://" + self.IP_found_arr[0], new = 2)
