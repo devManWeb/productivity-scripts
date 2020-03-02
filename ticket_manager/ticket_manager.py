@@ -94,27 +94,33 @@ class Ticket_manager():
 	def __search(self):
 		'''Used to search in the saved text files'''
 		term_to_search = input("\nInsert the term to search: ").upper()
-		items_found = []
+		
+		#the searched term cannot be empty
+		if not term_to_search: 
+			print("\nPlease insert a valid search query!")		
 
-		for file in [f for f in listdir(self.dir_path + "/tickets/") if f.endswith('.txt')]:
-			search_file = open(self.dir_path + "/tickets/" + file, "r")
-			for line in search_file:
-				if term_to_search in line.upper(): #we confront all uppercase characters
-
-					item_data = ["",""]
-					item_data[0] = file
-					item_data[1] = line
-					#we use an array to store data - faster than using a string
-					items_found.append(item_data)
-
-			search_file.close()
-
-		if not items_found: #if it is empty
-			print("\nNo result")
 		else:
-			for entry in items_found:
-				print("\nTicket id:" + entry[0])
-				print("Line content:" + entry[1])
+			items_found = []
+			for file in [f for f in listdir(self.dir_path + "/tickets/") if f.endswith('.txt')]:
+				search_file = open(self.dir_path + "/tickets/" + file, "r")
+				for line in search_file:
+					if term_to_search in line.upper(): #we confront all uppercase characters
+
+						item_data = ["",""]
+						item_data[0] = file
+						item_data[1] = line
+						#we use an array to store data - faster than using a string
+						items_found.append(item_data)
+
+				search_file.close()
+
+			if not items_found: #if it is empty
+				print("\nNo result")
+				
+			else:
+				for entry in items_found:
+					print("\nTicket id:" + entry[0])
+					print("Line content:" + entry[1])
 
 	def __modify_ticket(self):
 		'''Used to edit a ticket with the text editor with the id number'''
@@ -171,4 +177,3 @@ try:
 except Exception as run_error:
 	print(run_error)
 	input("Press any key to exit...")
-
